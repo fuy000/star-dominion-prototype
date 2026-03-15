@@ -1,4 +1,5 @@
 import unittest
+import runpy
 from unittest.mock import patch
 
 from game.cli import main
@@ -13,3 +14,9 @@ class CliTests(unittest.TestCase):
 
         create_default_app.assert_called_once_with()
         app.run.assert_called_once_with()
+
+    @patch("game.cli.main")
+    def test_python_m_game_entrypoint_calls_cli_main(self, cli_main) -> None:
+        runpy.run_module("game", run_name="__main__")
+
+        cli_main.assert_called_once_with()
